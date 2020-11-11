@@ -1,0 +1,20 @@
+{
+  "name": "@manzt/zarr-lite",
+  "version": "0.0.4",
+  "description": "A partial Zarr Implementation for reading array chunks.",
+  "type": "module",
+  "module": "index.js",
+  "files": [
+    "index.js",
+    "httpStore.js"
+  ],
+  "exports": {
+    ".": "./index.js",
+    "./httpStore": "./httpStore.js"
+  },
+  "scripts": {},
+  "keywords": [],
+  "author": "Trevor Manz",
+  "license": "MIT",
+  "dependencies": {}
+}
