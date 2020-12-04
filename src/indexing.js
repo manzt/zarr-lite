@@ -1,14 +1,12 @@
 export * from './index.js';
 import { ZarrArray } from './index.js';
+
 import { _BasicIndexer, _get_selection, slice } from '../node_modules/zarrita/src/indexing.js';
 export { slice };
 
+// mutate prototype and add indexing
+
 Object.defineProperties(ZarrArray.prototype, {
-  get_chunk: {
-    value: function(ckey) {
-      return this.getRawChunk(ckey);
-    }
-  },
   getRaw: {
     value: function(selection) {
       return this.getBasicSelection(selection);

@@ -3,19 +3,17 @@
   "version": "0.0.4",
   "description": "A partial Zarr Implementation for reading array chunks.",
   "type": "module",
-  "module": "index.js",
+  "module": "dist/index.js",
   "files": [
-    "index.js",
-    "indexing.js",
-    "httpStore.js"
+    "dist"
   ],
   "exports": {
-    ".": "./index.js",
-    "./indexing.js": "./indexing.js",
-    "./httpStore": "./httpStore.js"
+    ".": "./dist/index.js",
+    "./indexing.js": "./dist/indexing.js",
+    "./httpStore": "./dist/httpStore.js"
   },
   "scripts": {
-    "build": "rollup --format esm --dir . src/index.js src/indexing.js src/httpStore.js"
+    "build": "rollup --format esm --dir dist src/index.js src/indexing.js src/httpStore.js"
   },
   "keywords": [],
   "author": "Trevor Manz",
