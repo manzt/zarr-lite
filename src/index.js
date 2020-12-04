@@ -1,3 +1,6 @@
+import { KeyError } from '../node_modules/zarrita/src/errors.js';
+export { KeyError };
+
 function systemIsLittleEndian() {
   const a = new Uint32Array([0x12345678]);
   const b = new Uint8Array(a.buffer, a.byteOffset, a.byteLength);
@@ -74,34 +77,22 @@ function validateMetadata(meta) {
   }
 }
 
-async function decodeChunk(buffer, { compressor, dtype, chunks, TypedArray }) {
-  let bytes = new Uint8Array(buffer);
-  if (compressor) {
-    bytes = await compressor.decode(bytes);
+export class ZarrArray {
+  constructor({ store, path, ...meta }) {
+    Object.assign(this, meta);
+    this.path = path;
+    this.store = store;
+    this.TypedArray = DTYPES[this.dtype.slice(1, 3)];
+    this.chunk_shape = meta.chunks;
   }
-  const data = new TypedArray(bytes.buffer);
-  if ((dtype[0] === '>' && LITTLE_ENDIAN_OS) || (dtype[0] === '<' && !LITTLE_ENDIAN_OS)) {
-    byteSwapInplace(data);
-  }
-  const shape = chunks.filter(d => d > 1);
-  const strides = getStrides(shape);
-  return { data, shape, strides };
-}
 
-export async function openArray({ store, path = '' }) {
-  const z = await getJson(store, `${path}/.zarray`);
-  validateMetadata(z);
-  if (z.compressor) {
-    z.compressor = await getCodec(z.compressor);
-  }
-  z.TypedArray = DTYPES[z.dtype.slice(1, 3)];
-  z.getRawChunk = async ckey => {
+  async getRawChunk(ckey) {
     if (Array.isArray(ckey)) {
       ckey = ckey.join('.');
     }
     try {
-      const buffer = await store.getItem(path + "/" + ckey);
-      const decoded = await decodeChunk(buffer, z);
+      const buffer = await this.store.getItem(this.path + "/" + ckey);
+      const decoded = await this._decodeChunk(buffer)
       return decoded;
     } catch (err) {
       if (err instanceof KeyError) {
@@ -109,28 +100,34 @@ export async function openArray({ store, path = '' }) {
       }
       throw err;
     }
-  };
-  z.getRaw = () => {
+  }
+
+  async getRaw() {
     // TODO: Probably extend this core module with special indexing
     throw Error('Method not implemented in zarr-lite.')
   }
-  return z;
+
+  async _decodeChunk(buffer) {
+    let bytes = new Uint8Array(buffer);
+    if (this.compressor) {
+      const codec = await this.compressor;
+      bytes = await codec.decode(bytes);
+    }
+    const data = new this.TypedArray(bytes.buffer);
+    if ((this.dtype[0] === '>' && LITTLE_ENDIAN_OS) || (this.dtype[0] === '<' && !LITTLE_ENDIAN_OS)) {
+      byteSwapInplace(data);
+    }
+    const shape = this.chunks.filter(d => d > 1);
+    return { data, shape };
+  }
+
 }
 
-export class KeyError extends Error {
-  constructor(key) {
-    super(`key ${key} not present`);
-    Object.setPrototypeOf(this, KeyError.prototype);
+export async function openArray({ store, path = '' }) {
+  const meta = await getJson(store, `${path}/.zarray`);
+  validateMetadata(meta);
+  if (meta.compressor) {
+    meta.compressor = await getCodec(meta.compressor);
   }
-}
-
-export function getStrides(shape) {
-  const ndim = shape.length;
-  const strides = Array(ndim);
-  let step = 1; // init step
-  for (let i = ndim - 1; i >= 0; i--) {
-    strides[i] = step;
-    step *= shape[i];
-  }
-  return strides;
+  return new ZarrArray({ store, path, ...meta });
 }

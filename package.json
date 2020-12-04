@@ -6,15 +6,23 @@
   "module": "index.js",
   "files": [
     "index.js",
+    "indexing.js",
     "httpStore.js"
   ],
   "exports": {
     ".": "./index.js",
+    "./indexing.js": "./indexing.js",
     "./httpStore": "./httpStore.js"
   },
-  "scripts": {},
+  "scripts": {
+    "build": "rollup --format esm --dir . src/index.js src/indexing.js src/httpStore.js"
+  },
   "keywords": [],
   "author": "Trevor Manz",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "rollup": "^2.34.1",
+    "zarrita": "^0.1.1"
+  }
 }
