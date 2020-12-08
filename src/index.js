@@ -80,6 +80,7 @@ const storeHandler = {
 }
 
 async function openArray({ store, path = '' }) {
+  path = path.endsWith('/') ? path.slice(0, -1) : path;
   const meta = await getJson(store, `${path}/.zarray`);
   validateMetadata(meta);
   if (meta.compressor) {
