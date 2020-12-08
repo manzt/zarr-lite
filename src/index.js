@@ -1,5 +1,5 @@
 import { ZarrArray } from '../node_modules/zarrita/src/core.js';
-import { KeyError } from '../node_modules/zarrita/src/errors.js';
+import { KeyError } from './errors.js';
 
 Object.defineProperties(ZarrArray.prototype, {
   _chunk_key: {
