@@ -100,7 +100,7 @@ export {
   openArray,
   addCodec,
   getCodec,
-  getJson, 
+  getJson,
   KeyError,
   ZarrArray,
 };

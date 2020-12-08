@@ -2,6 +2,10 @@
   "name": "@manzt/zarr-lite",
   "version": "0.0.4",
   "description": "A partial Zarr Implementation for reading array chunks.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manzt/zarr-lite.git"
+  },
   "type": "module",
   "module": "dist/index.js",
   "files": [
@@ -9,7 +13,7 @@
   ],
   "exports": {
     ".": "./dist/index.js",
-    "./indexing.js": "./dist/indexing.js",
+    "./indexing": "./dist/indexing.js",
     "./httpStore": "./dist/httpStore.js"
   },
   "scripts": {
@@ -21,6 +25,6 @@
   "dependencies": {},
   "devDependencies": {
     "rollup": "^2.34.1",
-    "zarrita": "^0.1.1"
+    "zarrita": "^0.1.2"
   }
 }
