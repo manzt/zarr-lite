@@ -69,19 +69,19 @@ serve(z, port=8080, name='data.zarr', allowed_origins=["*"])
 
 Chunk compression is an important aspect Zarr, but you shouldn't have to pay for a codec 
 you don't use! Ultimately array compression might not be known until _runtime_, so by
-default `zarr-lite` exports a `registry` that serves to dynamically import (`numcodecs.js`)
-codecs from a CDN. The `registry` is just a JavaScript `Map`, so you can override this default
-behavior (e.g. host your own modules or use your own codecs) by overriding the registry key:
+default `zarr-lite` contains a codec `registry` the dynamically imports (`numcodecs.js`)
+codecs from a CDN. The `registry` is just an ES6 `Map`, and you can override this default
+behavior (e.g. host your own modules or use your own codecs) using `addCodec`.
 
 ```javascript
-import { registry, openArray } from 'zarr-lite';
+import { addCodec, openArray } from 'zarr-lite';
 import MyCustomCodec from './myCustomCodec';
 
 // override CDN codec
-registry.set('blosc', () => MyCustomCodec);
+addCodec('blosc', () => MyCustomCodec);
 
 // add new codec
-registry.set(MyCustomCodec.id, () => MyCustomCodec);
+addCodec(MyCustomCodec.id, () => MyCustomCodec);
 
 const z = await openArray({ store });
 ```
