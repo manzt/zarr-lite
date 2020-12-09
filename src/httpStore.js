@@ -1,4 +1,4 @@
-import { KeyError } from './index.js';
+import { KeyError } from './errors.js';
 
 function joinUrlParts(...args) {
   return args.map((part, i) => {

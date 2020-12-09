@@ -1,20 +1,30 @@
 {
   "name": "@manzt/zarr-lite",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "description": "A partial Zarr Implementation for reading array chunks.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manzt/zarr-lite.git"
+  },
   "type": "module",
-  "module": "index.js",
+  "module": "dist/index.js",
   "files": [
-    "index.js",
-    "httpStore.js"
+    "dist"
   ],
   "exports": {
-    ".": "./index.js",
-    "./httpStore": "./httpStore.js"
+    ".": "./dist/index.js",
+    "./indexing": "./dist/indexing.js",
+    "./httpStore": "./dist/httpStore.js"
   },
-  "scripts": {},
+  "scripts": {
+    "build": "rollup --format esm --dir dist src/index.js src/indexing.js src/httpStore.js"
+  },
   "keywords": [],
   "author": "Trevor Manz",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "rollup": "^2.34.1",
+    "zarrita": "^0.1.3"
+  }
 }
