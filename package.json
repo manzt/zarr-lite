@@ -7,17 +7,17 @@
     "url": "https://github.com/manzt/zarr-lite.git"
   },
   "type": "module",
-  "module": "dist/index.js",
+  "module": "index.js",
   "files": [
-    "dist"
+    "*.js"
   ],
   "exports": {
-    ".": "./dist/index.js",
-    "./indexing": "./dist/indexing.js",
-    "./httpStore": "./dist/httpStore.js"
+    ".": "./index.js",
+    "./indexing": "./indexing.js",
+    "./httpStore": "./httpStore.js"
   },
   "scripts": {
-    "build": "rollup --format esm --dir dist src/index.js src/indexing.js src/httpStore.js"
+    "build": "rollup --format esm --dir . src/index.js src/indexing.js src/httpStore.js"
   },
   "keywords": [],
   "author": "Trevor Manz",
