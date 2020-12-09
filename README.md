@@ -20,8 +20,8 @@ and instead relies on the user to request array chunks by key directly.
 #### Client
 
 ```javascript
-import { openArray } from 'https://unpkg.com/@manzt/zarr-lite/index.js'; // pure ESM module, ~2kb
-import HTTPStore  from 'https://unpkg.com/@manzt/zarr-lite/httpStore.js' // No default store; can use any zarr.js store!
+import { openArray } from 'https://cdn.skypack.dev/@manzt/zarr-lite'; // pure ESM module, ~2kb
+import HTTPStore  from 'https://cdn.skypack.dev/@manzt/zarr-lite/httpStore' // No default store; can use any zarr.js store!
 
 
 // open an array
