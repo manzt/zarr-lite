@@ -11,18 +11,20 @@ unless you know what you are doing!
 
 ### Usage
 
-`zarr-lite` only supports _reading_ array `chunks` directly from a valid `Store` interface. To mimic
-the `zarr.js` API, a `zarr-lite` exports a top-level `openArray` util which returns an `ZarrArray` object 
-with only `getRawChunk` implemented. This means that `zarr-lite` does not support any type of slicing/indexing,
-and instead relies on the user to request array chunks by key directly.
-
+`zarr-lite` supports only _reading_ array `chunks` and slices directly from a valid `Store` interface. To mimic
+the `zarr.js` API, `zarr-lite` exports a top-level `openArray` util which returns an `ZarrArray` object 
+with only `getRaw` and `getRawChunk` implemented. If your use case only requires reading chunks, you should just 
+use the `/core` submodule which does not support any slicing/indexing logic, and instead relies on the user to
+request array chunks by key directly.
 
 #### Client
 
 ```javascript
-import { openArray } from 'https://cdn.skypack.dev/@manzt/zarr-lite'; // pure ESM module, ~2kb
-import HTTPStore  from 'https://cdn.skypack.dev/@manzt/zarr-lite/httpStore' // No default store; can use any zarr.js store!
+// ~3.6kB min + gzip
+import { openArray, HTTPStore, slice } from 'https://cdn.skypack.dev/@manzt/zarr-lite';
 
+// ~ 1.75kB min + gzip
+// import { openArray, HTTPStore } from 'https://cdn.skypack.dev/@manzt/zarr-lite/core';
 
 // open an array
 (async () => {
@@ -46,7 +48,15 @@ import HTTPStore  from 'https://cdn.skypack.dev/@manzt/zarr-lite/httpStore' // N
   // {
   //   data: Int32Array(1250000),
   //   shape: [5, 500, 500],
-  //   strides: [250000, 500, 1],
+  //   stride: [250000, 500, 1],
+  // }
+
+  const arr = await z.getRaw([0, slice(0, 200, 2), null]); // not implemented for `/core` submodule
+  console.log(arr);
+  // {
+  //   data: Int32Array(50000),
+  //   shape: [100, 500],
+  //   stride: [500, 1],
   // }
 })();
 ```
@@ -74,7 +84,7 @@ codecs from a CDN. The `registry` is just an ES6 `Map`, and you can override thi
 behavior (e.g. host your own modules or use your own codecs) using `addCodec`.
 
 ```javascript
-import { addCodec, openArray } from 'zarr-lite';
+import { addCodec, openArray } from '@manzt/zarr-lite';
 import MyCustomCodec from './myCustomCodec';
 
 // override CDN codec
