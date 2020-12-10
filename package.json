@@ -9,17 +9,23 @@
   "type": "module",
   "module": "index.js",
   "files": [
-    "*.js"
+    "*.js",
+    "*.d.ts"
   ],
   "exports": {
     ".": "./index.js",
-    "./indexing": "./indexing.js",
+    "./core": "./core.js",
     "./httpStore": "./httpStore.js"
   },
   "scripts": {
-    "build": "rollup --format esm --dir . src/index.js src/indexing.js src/httpStore.js"
+    "build": "rollup --format esm --dir dist src/index.js src/core.js src/httpStore.js",
+    "postbuild": "cp -r types/* dist"
   },
-  "keywords": [],
+  "keywords": [
+    "zarr",
+    "ndarray",
+    "async"
+  ],
   "author": "Trevor Manz",
   "license": "MIT",
   "dependencies": {},
