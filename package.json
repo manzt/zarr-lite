@@ -8,6 +8,7 @@
   },
   "type": "module",
   "module": "index.js",
+  "types": "index.d.ts",
   "files": [
     "*.js",
     "*.d.ts"
