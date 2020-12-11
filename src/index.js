@@ -1,7 +1,7 @@
 export * from './core.js';
 import { ZarrArray } from './core.js';
 
-import { _BasicIndexer, _get_selection, slice } from '../node_modules/zarrita/src/indexing.js';
+import { _BasicIndexer, _get_selection, slice } from 'zarrita/lib/indexing';
 export { slice };
 
 // mutate prototype and add indexing

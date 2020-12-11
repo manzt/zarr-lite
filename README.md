@@ -97,3 +97,26 @@ const z = await openArray({ store });
 ```
 
 For more information about the `Codec` interface, checkout [`numcodecs.js`](https://github.com/manzt/numcodecs.js).
+
+
+
+#### Development
+
+```bash
+$ git clone https://github.com/manzt/zarr-lite.git
+$ cd zarr-lite && npm install
+$ npm run dev # builds source in watch mode
+```
+
+You can serve the contents of `dist/` via an http server and test in the browser. I've just been using 
+https://observablehq.com/@manzt/using-zarr-lite to experiment since most of the library is imported from 
+`zarrita`.
+
+#### Publishing
+
+```bash
+$ npm version [<newversion> | major | minor | patch]
+$ npm run build # bundles source & copies README.md + package.json to dist/
+$ cd dist
+$ npm publish
+```
