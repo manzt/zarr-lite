@@ -108,8 +108,9 @@ $ cd zarr-lite && npm install
 $ npm run dev # builds source in watch mode
 ```
 
-You can serve the contents of `dist/` via an http server and test in the browser. For now, I've just been using 
-https://observablehq.com/@manzt/using-zarr-lite to experiment.
+You can serve the contents of `dist/` via an http server and test in the browser. I've just been using 
+https://observablehq.com/@manzt/using-zarr-lite to experiment since most of the library is imported from 
+`zarrita`.
 
 #### Publishing
 
