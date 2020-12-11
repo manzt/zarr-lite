@@ -1,4 +1,4 @@
-import { ZarrArray } from '../node_modules/zarrita/src/core.js';
+import { ZarrArray } from 'zarrita/core';
 
 import HTTPStore from './httpStore.js';
 import { KeyError } from './errors.js';

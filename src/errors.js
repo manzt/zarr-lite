@@ -1,1 +1,1 @@
-export { KeyError } from '../node_modules/zarrita/src/errors.js';
+export { KeyError } from 'zarrita/lib/errors';
