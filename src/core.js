@@ -1,4 +1,4 @@
-import { ZarrArray } from 'zarrita/core';
+import { ZarrArray, DTYPE_STRS } from 'zarrita/core';
 
 import HTTPStore from './httpStore.js';
 import { KeyError } from './errors.js';
@@ -42,13 +42,7 @@ async function openArray({ store, path = '' }) {
     meta.compressor = await getCodec(meta.compressor);
   }
   store = new Proxy(store, storeHandler);
-  return new ZarrArray({
-    store,
-    path,
-    chunk_shape: meta.chunks,
-    chunk_separator: '.',
-    ...meta,
-  });
+  return new ZarrArray({ store, path, chunk_shape: meta.chunks, chunk_separator: '.', ...meta });
 }
 
 // alias zarrita.js conventions for store to zarr-lite/zarr.js conventions.
@@ -99,8 +93,7 @@ async function getJson(store, key) {
   return json;
 }
 
-function validateMetadata(meta) {
-  const { order, dtype, filters, zarr_format } = meta;
+function validateMetadata({ order, dtype, filters, zarr_format }) {
   if (zarr_format !== 2) {
     throw new Error('Only Zarr v2 supported.')
   }
@@ -110,8 +103,8 @@ function validateMetadata(meta) {
   if (filters?.length > 0) {
     throw new Error('Filters not implmented.')
   }
-  if (meta.dtype.startsWith('|')) {
-    meta.dtype = dtype.slice(1);
+  if (!DTYPE_STRS.has(dtype)) {
+    throw new Error(`Dtype not supported, got ${dtype}.`);
   }
 }
 
