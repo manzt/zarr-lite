@@ -1,8 +1,5 @@
-export * from './core.js';
-import { ZarrArray } from './core.js';
-
 import { _BasicIndexer, _get_selection, slice } from 'zarrita/lib/indexing';
-export { slice };
+import { ZarrArray } from './core.js';
 
 // mutate prototype and add indexing
 
@@ -19,3 +16,6 @@ Object.defineProperties(ZarrArray.prototype, {
     }
   }
 });
+
+export { openArray, addCodec, getJson, KeyError, HTTPStore } from './core.js';
+export { slice, ZarrArray };
