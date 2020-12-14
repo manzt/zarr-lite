@@ -1,23 +1,35 @@
-export { Store, TypedArray, Codec, HTTPStore, getCodec, addCodec } from './core';
-export function openArray({ store, path }: { store: Store, path?: string }): Promise<ZarrArray>;
-import type { TypedArray, ZarrArray as BaseZarrArray } from './core';
+import type { TypedArray, Codec, Store } from './common';
 
-export type Indices = [start: number, stop: number, step: number];
-export interface Slice { 
-    start: number | null;
-    stop: number | null;
-    step: number | null;
-    indices: (length: number) => Indices;
-    _slice: true;
+type Indices = [start: number, stop: number, step: number];
+
+interface Slice {
+  start: number | null;
+  stop: number | null;
+  step: number | null;
+  indices: (length: number) => Indices;
+  _slice: true;
 }
-export type Selection = (number | null | Slice)[];
 
-export function slice(start: null | number, stop?: null | number, step?: null | number): Slice;
+function slice(start: number | null, stop?: null | number, step: null | number = null): Slice;
 
 // extends BaseZarrArray with indexing 
 
-export type ZarrArray = BaseZarrArray & {
-    getRaw(selection: Selection): Promise<{ data: TypedArray, shape: number[], stride: number[] }>;
+interface ZarrArray {
+    store: Store;
+    path: string;
+    shape: number[];
+    dtype: string;
+    chunks: number[]
+    compressor?: Codec;
+    fill_value: number | null;
+    keyPrefix: string;
+    attrs: any;
+    TypedArray: TypedArray;
+    getRawChunk(chunkCoord: number[] | string): Promise<NDArray>;
+    getRaw(selection: null | (number | null | Slice)[]): Promise<number | { data: TypedArray, shape: number[], stride: number[]}>;
 }
 
-export function openArray({ store, path }: { store: Store, path?: string }): Promise<ZarrArray>;
+function openArray({ store, path }: { store: Store, path?: string }): Promise<ZarrArray>;
+
+export { Store, HTTPStore, addCodec, getJson } from './core';
+export { ZarrArray, openArray, slice };
