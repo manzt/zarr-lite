@@ -12,14 +12,18 @@ Object.defineProperties(ZarrArray.prototype, {
       if (Array.isArray(chunkCoords)) {
         chunkCoords = chunkCoords.join(this.chunk_separator);
       }
-      return this.path + '/' + chunkCoords;
+      return this.keyPrefix + chunkCoords;
     },
   },
   keyPrefix: {
-    get() { return this.path + '/' },
+    get() {
+      return this.path.length > 0 ? this.path + '/' : '';
+    },
   },
   chunks: {
-    get() { return this.chunk_shape; },
+    get() {
+      return this.chunk_shape;
+    },
   },
   getRawChunk: {
     value: function(chunkCoords) {
@@ -36,7 +40,7 @@ async function openArray({ store, path = '' }) {
     store = new HTTPStore(store);
   }
   path = path.endsWith('/') ? path.slice(0, -1) : path;
-  const meta = await getJson(store, `${path}/.zarray`);
+  const meta = await getJson(store, `${path === '' ? path : path + '/'}.zarray`);
   validateMetadata(meta);
   if (meta.compressor) {
     meta.compressor = await getCodec(meta.compressor);
