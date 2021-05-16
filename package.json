@@ -1,6 +1,6 @@
 {
   "name": "@manzt/zarr-lite",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "A partial Zarr Implementation for reading array chunks.",
   "repository": {
     "type": "git",
